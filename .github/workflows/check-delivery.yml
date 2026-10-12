@@ -1,0 +1,28 @@
+name: 受け取り係のテスト（ドライブとメールだけ・1分）
+
+# 受け取り係（gas/受け取り係.gs）と、GitHub の Secrets（GAS_URL・GAS_KEY）が正しく入っているかを確かめます。
+# 動画は作りません。ドライブの「SNS自動投稿 ＞ 受け取り係のテスト」に小さな文章ファイルが入り、メールが届けば成功です。
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: '3.11'
+      - name: 受け取り係に、テストの文章を送る
+        env:
+          GAS_URL: ${{ secrets.GAS_URL }}
+          GAS_KEY: ${{ secrets.GAS_KEY }}
+        run: |
+          pip install -q requests
+          mkdir -p "$RUNNER_TEMP/test/受け取り係のテスト"
+          echo '{"chosen_topic": {"topic": "受け取り係のテスト（このメールが届けば成功です）"}}' > "$RUNNER_TEMP/test/sns-context.json"
+          python deliver.py "$RUNNER_TEMP/test" "$RUNNER_TEMP/test/受け取り係のテスト"

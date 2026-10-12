@@ -7,6 +7,7 @@ GitHub の Secrets：GAS_URL（受け取り係のウェブアプリの URL）・
 import json
 import os
 import base64
+import re
 import glob
 import sys
 
@@ -21,7 +22,10 @@ def load(path, default=None):
 
 
 def gas(payload):
-    r = requests.post(os.environ["GAS_URL"], json={**payload, "key": os.environ.get("GAS_KEY", "")}, timeout=300)
+    # コピーしたときに入りがちな空白・改行・「GAS_KEY に入れる値：」を取り除く（貼り直さなくても動くように）
+    key = re.sub(r"\s+", "", os.environ.get("GAS_KEY", "")).replace("GAS_KEY に入れる値：", "").replace("GAS_KEYに入れる値：", "")
+    url = re.sub(r"\s+", "", os.environ["GAS_URL"])
+    r = requests.post(url, json={**payload, "key": key}, timeout=300)
     r.raise_for_status()
     res = r.json()
     if not res.get("ok"):
