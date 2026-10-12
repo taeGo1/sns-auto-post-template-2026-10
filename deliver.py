@@ -29,6 +29,10 @@ def gas(payload):
     r.raise_for_status()
     res = r.json()
     if not res.get("ok"):
+        if "鍵" in str(res.get("error", "")):
+            # 鍵の全体は出さない。確かめるための「文字数」と「最初の4文字」だけ
+            print(f"   （GitHub に入っている GAS_KEY：{len(key)}文字・最初の4文字「{key[:4]}」／受け取り係の URL の最後：…{url[-6:]}）")
+            print("   受け取り係の「プロジェクトの設定 → スクリプト プロパティ → KEY」の値と、文字数・最初の4文字が同じか確かめてください")
         raise RuntimeError(res.get("error", "受け取り係でエラー"))
     return res
 
