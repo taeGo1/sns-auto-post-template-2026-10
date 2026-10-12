@@ -12,7 +12,7 @@
  *  4. GitHub の Secrets に GAS_URL（URL）と GAS_KEY（鍵）を入れる
  */
 
-const TOP_FOLDER = 'SNS自動投稿';  // ドライブにできるフォルダの名前（変えてもOK）
+const TOP_FOLDER = 'SNS自動投稿_届いたもの';  // ドライブにできるフォルダの名前。すでにある同じ名前のフォルダの中に入るので、ほかと重ならない名前にする
 
 function はじめに1回だけ実行() {
   const key = Utilities.getUuid();
