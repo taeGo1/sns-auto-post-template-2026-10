@@ -1,4 +1,4 @@
-"""⑩ 届ける：動画・カルーセル画像・文章を Google ドライブに保存し、メールで知らせる。
+"""⑧ 届ける：動画・カルーセル画像・文章を Google ドライブに保存し、メールで知らせる。
 
 ドライブへの保存とメールは、あなたの Google アカウントの「受け取り係」（gas/受け取り係.gs）が行う（無料）。
 GitHub の Secrets：GAS_URL（受け取り係のウェブアプリの URL）・GAS_KEY（受け取り係の鍵）
@@ -34,8 +34,6 @@ def main(work, out_dir):
     posts = load(os.path.join(work, "sns-posts.json"), []) or []
     draft = load(os.path.join(work, "sns-draft.json"), {}) or {}
     check = load(os.path.join(work, "sns-check.json"), {}) or {}
-    replay = load(os.path.join(work, "replay.json"), {}) or {}
-    work_caps = load(os.path.join(work, "sns-captions-work.json"), {}) or {}
     mode = os.getenv("VIDEO_MODE", "")
     run_url = f"{os.getenv('GITHUB_SERVER_URL', 'https://github.com')}/{os.getenv('GITHUB_REPOSITORY', '')}/actions/runs/{os.getenv('GITHUB_RUN_ID', '')}"
 
@@ -44,12 +42,7 @@ def main(work, out_dir):
     why = (ctx.get("chosen_topic") or {}).get("why")
     if why:
         lines.append(f"　選んだ理由：{why}")
-    wr = ctx.get("work_record") or {}
-    if wr.get("ok"):
-        lines.append(f"■ 試したこと：{wr.get('task', '')}（Claude Code が実際に動いた記録。データは架空のサンプル）")
-    elif wr:
-        lines.append(f"■ 試さなかった理由：{wr.get('reason', '')}")
-    lines.append(f"■ 動画：{'作業動画（試した記録）' if mode == 'work' else 'パターン動画' if mode else 'なし'}")
+    lines.append(f"■ 動画：{'あり（パターン動画）' if mode else 'なし（動画の段まで進みませんでした）'}")
     lines += ["", "▼ 動画・カルーセルの画像・この文章は、Google ドライブのこのフォルダに入っています", "（ドライブのリンク）", ""]
 
     # X の投稿案
@@ -58,13 +51,9 @@ def main(work, out_dir):
         floor = ctx.get("post_length_min") or 0
         note = "　※ 短めです" if floor and n < floor else ""
         lines += ["=" * 30, f"▼ X の投稿案{i}（{n}字）{note}" + ("　← 動画と同じ話題" if i == 1 else ""), "=" * 30, p.get("post_text", ""), ""]
-    if mode == "work" and work_caps.get("x"):
-        lines += ["=" * 30, "▼ X（作業動画と一緒に出す用）", "=" * 30, work_caps["x"], ""]
 
-    # Instagram・Threads・TikTok（作業動画の日は、作業動画用の文章を優先）
+    # Instagram・Threads・TikTok
     caps = dict(draft.get("captions") or {})
-    if mode == "work":
-        caps.update({k: v for k, v in work_caps.items() if v and k != "x"})
     for title, key in [("Instagram（リール）", "instagram_reel"), ("Instagram（カルーセル）", "instagram_carousel"),
                        ("Threads", "threads"), ("TikTok", "tiktok")]:
         if caps.get(key):

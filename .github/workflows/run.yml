@@ -84,64 +84,7 @@ jobs:
       - name: ④ 選んだ話題の本文を材料に入れる
         run: python build_candidates.py --attach "${{ runner.temp }}/sns-context.json" "${{ runner.temp }}/topic-choice.json"
 
-      - name: ⑤ 試す計画（Claude）
-        continue-on-error: true
-        uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
-        with:
-          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
-          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
-          claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
-          prompt: |
-            prompts/plan_work.md を Read tool で読み、その指示に完全に従って「本当に試す」の計画を書く。
-
-            【読むファイル】
-            - ${{ runner.temp }}/sns-context.json  ← 材料（chosen_topic・primary_evidence）
-
-            【出力先】
-            - ${{ runner.temp }}/work-plan.json
-
-      - name: ⑥ 本当に試す（Claude Code・5分以内・架空のサンプルデータ）
-        id: demo
-        continue-on-error: true
-        env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ env.CLAUDE_TOKEN }}
-        run: |
-          if python -c "import json,sys; sys.exit(0 if json.load(open('${{ runner.temp }}/work-plan.json')).get('demo',{}).get('doable') else 1)" 2>/dev/null; then
-            npm install -g @anthropic-ai/claude-code --no-audit --no-fund > /dev/null
-            cd sns-studio/tools && python run_demo.py "${{ runner.temp }}/work-plan.json" "${{ runner.temp }}/demo" "${{ runner.temp }}/replay.json"
-          else
-            echo "今日は試さない日です（計画が「試せない」と判断）→ パターン動画にします"
-            echo "demo_ok=false" >> "$GITHUB_OUTPUT"
-            echo "demo_reason=計画が「試せない話題」と判断しました" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: ⑥b 作業動画の説明文字（Claude）
-        if: steps.demo.outputs.demo_ok == 'true'
-        continue-on-error: true
-        uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
-        with:
-          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
-          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
-          claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
-          prompt: |
-            prompts/explain_work.md を Read tool で読み、その指示に完全に従って作業動画の説明文字を書く。
-
-            【読むファイル】
-            - ${{ runner.temp }}/replay-brief.json  ← 作業記録の要約（これだけ読む。replay.json は読まない＝大きすぎる）
-            - ${{ runner.temp }}/work-plan.json  ← 計画（watch・feature・scene）
-
-            【出力先】
-            - ${{ runner.temp }}/notes.json
-
-      - name: ⑥c 説明文字を記録に付ける（記録に無い言葉は落とす）
-        if: steps.demo.outputs.demo_ok == 'true'
-        continue-on-error: true
-        run: cd sns-studio/tools && python attach_notes.py "${{ runner.temp }}/replay.json" "${{ runner.temp }}/notes.json"
-
-      - name: ⑥d 試した記録を材料に足す
-        run: python work_record.py "${{ runner.temp }}/sns-context.json" "${{ runner.temp }}/replay.json" "${{ runner.temp }}/work-plan.json" --reason "${{ steps.demo.outputs.demo_reason }}"
-
-      - name: ⑦ 投稿を書く（Claude）
+      - name: ⑤ 投稿を書く（Claude）
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         env:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
@@ -159,10 +102,10 @@ jobs:
             【出力先】
             - ${{ runner.temp }}/sns-posts.json
 
-      - name: ⑦b 事実の照合（報告だけ）
+      - name: ⑤b 事実の照合（報告だけ）
         run: python check_evidence.py "${{ runner.temp }}/sns-posts.json" "${{ runner.temp }}/sns-context.json" "${{ runner.temp }}/evidence-check-report.json" --report-only
 
-      - name: ⑦c 直す（根拠を付け直す・原文どおりに書き直す）
+      - name: ⑤c 直す（根拠を付け直す・原文どおりに書き直す）
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
@@ -182,10 +125,10 @@ jobs:
             - ${{ runner.temp }}/sns-posts.json（Edit で直す）
             - ${{ runner.temp }}/repair-log.json
 
-      - name: ⑦d 事実の照合（根拠の無い行を削除）
+      - name: ⑤d 事実の照合（根拠の無い行を削除）
         run: python check_evidence.py "${{ runner.temp }}/sns-posts.json" "${{ runner.temp }}/sns-context.json" "${{ runner.temp }}/evidence-check.json"
 
-      - name: ⑦e 事実チェック（Claude）
+      - name: ⑤e 事実チェック（Claude）
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
@@ -203,7 +146,7 @@ jobs:
             - ${{ runner.temp }}/evidence-check.json  ← 機械の照合の結果（削除した行は戻さない）
 
       # ───── 動画・カルーセル・SNS の文章 ─────
-      - name: ⑧ 動画とカルーセルの下書き（Claude）
+      - name: ⑥ 動画とカルーセルの下書き（Claude）
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         env:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
@@ -221,12 +164,12 @@ jobs:
             【出力先】
             - ${{ runner.temp }}/sns-draft.json
 
-      - name: ⑧b 下書きの検査（文字数・場面の数）
+      - name: ⑥b 下書きの検査（文字数・場面の数）
         id: check1
         working-directory: sns-studio/tools
         run: python check_draft.py "${{ runner.temp }}/sns-draft.json" "${{ runner.temp }}/sns-check.json"
 
-      - name: ⑧c 書き直し（検査でエラーがあったときだけ）
+      - name: ⑥c 書き直し（検査でエラーがあったときだけ）
         if: steps.check1.outputs.ok == 'false'
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         env:
@@ -240,27 +183,10 @@ jobs:
             検査結果 ${{ runner.temp }}/sns-check.json の errors をすべて直して、同じファイルを上書きせよ。
             決まりは sns-studio/rules/SNSの型.md。直すのはエラーの箇所だけ。文字数オーバーは言葉を削って収める。
 
-      - name: ⑧d 再検査
+      - name: ⑥d 再検査
         if: steps.check1.outputs.ok == 'false'
         working-directory: sns-studio/tools
         run: python check_draft.py "${{ runner.temp }}/sns-draft.json" "${{ runner.temp }}/sns-check.json"
-
-      - name: ⑧e 作業動画の文章（Claude・試せた日だけ）
-        if: steps.demo.outputs.demo_ok == 'true'
-        continue-on-error: true
-        uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
-        with:
-          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
-          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
-          claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write'
-          prompt: |
-            sns-studio/prompts/caption_work.md を Read tool で読み、その指示に完全に従って作業動画の投稿文を書く。
-
-            【ファイルの場所】
-            - 作業記録 replay.json：${{ runner.temp }}/replay.json
-            - 計画 work-plan.json：${{ runner.temp }}/work-plan.json
-            - 下書き sns-draft.json：${{ runner.temp }}/sns-draft.json
-            - 出力 sns-captions-work.json（ここに Write する）：${{ runner.temp }}/sns-captions-work.json
 
       - name: 準備（動画の部品）
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
@@ -275,33 +201,21 @@ jobs:
           npm ci --no-audit --no-fund
           npx remotion browser ensure
 
-      - name: ⑨ 動画とカルーセルを書き出す
+      - name: ⑦ 動画とカルーセルを書き出す
         id: render
         working-directory: sns-studio
-        env:
-          DEMO_OK: ${{ steps.demo.outputs.demo_ok }}
-          REPLAY_FILE: ${{ runner.temp }}/replay.json
         run: |
-          if [ "$DEMO_OK" = "true" ]; then MODE=work; else MODE=pattern; fi
-          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "mode=pattern" >> "$GITHUB_OUTPUT"
           python tools/prepare_render.py "${{ runner.temp }}/sns-draft.json"
           NAME=$(grep '^name=' "$GITHUB_OUTPUT" | tail -1 | cut -d= -f2-)
           OUT="out/$NAME"; mkdir -p "$OUT" public/bgm
-          if [ "$MODE" = "work" ]; then
-            python tools/make_work_bgm.py --props "$REPLAY_FILE" --layout wide --out "public/bgm/${NAME}_wide.wav"
-            python tools/make_work_bgm.py --props "$REPLAY_FILE" --layout tall --out "public/bgm/${NAME}_tall.wav"
-            python -c "import json,sys; d=json.load(open(sys.argv[1])); p=json.load(open(sys.argv[2])); n=sys.argv[3]; [json.dump({**d,'handle':p.get(h,''),'bgm':f'bgm/{n}_{l}.wav'}, open(f'{sys.argv[4]}_{l}.json','w'), ensure_ascii=False) for l,h in (('wide','handle_wide'),('tall','handle'))]" "$REPLAY_FILE" "props/$NAME.json" "$NAME" "$RUNNER_TEMP/replay"
-            npx remotion render src/index.ts TerminalWide "$OUT/横長_X・Threads用.mp4" --props="$RUNNER_TEMP/replay_wide.json"
-            npx remotion render src/index.ts TerminalTall "$OUT/縦長_リール・TikTok用.mp4" --props="$RUNNER_TEMP/replay_tall.json"
-          else
-            python tools/make_bgm.py --props "props/$NAME.json" --out "public/bgm/$NAME.wav"
-            npx remotion render src/index.ts ReelWide "$OUT/横長_X・Threads用.mp4" --props="props/$NAME.json"
-            npx remotion render src/index.ts Reel "$OUT/リール用.mp4" --props="props/$NAME.json"
-            npx remotion render src/index.ts TikTok "$OUT/TikTok用.mp4" --props="props/$NAME.json"
-          fi
+          python tools/make_bgm.py --props "props/$NAME.json" --out "public/bgm/$NAME.wav"
+          npx remotion render src/index.ts ReelWide "$OUT/横長_X・Threads用.mp4" --props="props/$NAME.json"
+          npx remotion render src/index.ts Reel "$OUT/リール用.mp4" --props="props/$NAME.json"
+          npx remotion render src/index.ts TikTok "$OUT/TikTok用.mp4" --props="props/$NAME.json"
           npx remotion render src/index.ts Carousel "$OUT/カルーセル" --sequence --image-format=png --props="props/$NAME.json"
 
-      - name: ⑩ Google ドライブに保存して、メールで知らせる
+      - name: ⑧ Google ドライブに保存して、メールで知らせる
         if: always()
         env:
           GAS_URL: ${{ secrets.GAS_URL }}
