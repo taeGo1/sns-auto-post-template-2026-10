@@ -1,0 +1,16 @@
+{
+  "name": "sns-studio",
+  "private": true,
+  "description": "Instagram・Threads・TikTok のカルーセル画像と動画を書き出す道具（Remotion）。決まりは rules/ にある",
+  "scripts": {
+    "studio": "remotion studio src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.529",
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.529",
+    "typescript": "^7.0.2"
+  }
+}

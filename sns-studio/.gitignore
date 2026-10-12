@@ -1,0 +1,9 @@
+# 動画の部品（GitHub の上で毎回入れる）
+node_modules
+# 書き出した動画・画像（大きいので入れない）
+out/
+# BGM は tools/make_bgm.py で毎回作り直せるので入れない
+public/bgm/
+.DS_Store
+# 作業ツールが作るフォルダ
+.claude/

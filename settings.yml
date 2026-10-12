@@ -1,0 +1,32 @@
+# あなたの発信の設定です。
+# 書き換えるときは、Claude に「settings.yml を、私の発信に合わせて書き換えたい。質問しながら進めて」と頼むと楽です。
+# （# から右はメモです。動きには関係ありません）
+
+# ── Claude のモデル ──
+# Pro プランの人は、このまま sonnet で使ってください。
+# Max プランの人は、話題を選ぶ段（いちばん大事な判断）を opus にすると、選ぶ話題の精度が上がります。
+claude:
+  model: sonnet           # 書く・直す・動画の下書きなど、ほとんどの段（sonnet のままがおすすめ）
+  model_choose: sonnet    # 話題を選ぶ段（Max プランの人は opus に変えてOK）
+
+# ── 動画・カルーセルに出す名前 ──
+account:
+  name_on_video: "@your_account"            # 縦長の動画・カルーセルに出る名前（Instagram・TikTok のアカウント名など）
+  name_on_wide_video: "@your_account"       # 横長の動画に出る名前（X・Threads のアカウント名など）
+
+# ── どこから話題を集めるか ──
+# 空のままでOKです。毎回 AI が prompts/reader.md（読む人）を読んで、集める先を自動で決めます。
+# 「ここは必ず見てほしい」という場所があれば書き足してください（AI が決めた先に足されます）。
+collect:
+  news_keywords_ja: []      # ニュースで探す言葉。例：["Canva 新機能", "Instagram アップデート"]
+  news_keywords_en: []      # 英語で探す言葉。例：["Canva new feature"]
+  rss: []                   # 公式ブログやメディアの RSS。例：
+                            #   - name: "〇〇公式ブログ"
+                            #     url: "https://example.com/feed"
+                            #     official: true      # 公式のお知らせなら true
+  window_days: 7            # 何日前までのお知らせを候補にするか（静かな日に「数日前の発表の使い方」を出すため）
+
+# ── 投稿の長さ（文字数） ──
+post:
+  length_max: 1000     # これより長くしない
+  length_min: 280      # これより短いと「短すぎる」とメールに表示します
