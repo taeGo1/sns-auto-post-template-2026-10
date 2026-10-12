@@ -6,16 +6,16 @@ import React from 'react';
 import type { Pattern } from './types';
 
 export const C = {
-  navy: '#152043',
-  navyDeep: '#0D1530',
-  yellow: '#FFD500',
-  yellowSoft: '#FFF4A8',
-  cream: '#FAF6EA',
-  creamDark: '#EFE7CF',
+  navy: '#1E293B',
+  navyDeep: '#0F172A',
+  yellow: '#5EEAD4',
+  yellowSoft: '#CCFBF1',
+  cream: '#F8FAFC',
+  creamDark: '#E2E8F0',
   white: '#FFFFFF',
-  muted: '#4B5A75',
-  orange: '#F08437',
-  sky: '#7CC4FF',
+  muted: '#64748B',
+  orange: '#F97316',
+  sky: '#93C5FD',
   red: '#E5484D',     // NG の×（やりがちNG→OK）
   green: '#22B07D',   // OK の◯
   chatBg: '#EEF0F5',  // POV のチャット画面
@@ -56,75 +56,27 @@ export type Theme = {
   headWeight: number;
 };
 
-export const THEMES: Record<Pattern, Theme> = {
-  // 速報：黄色が主役。紺のストライプとオレンジの札で「いま起きている」感
-  breaking: {
-    bpm: 160, transition: 'flash',
-    label: '速報', tag: 'BREAKING NEWS',
-    bg: C.yellow, ink: C.navy, sub: C.navy, accent: C.orange, marker: C.white,
-    sticker: C.orange, stickerInk: C.white, head: GOTHIC, headWeight: 900,
-  },
-  // ノウハウ：クリームに水玉。黄色マーカーと番号シールで「保存したくなる」
+// 型（パターン）。最初は3つだけ。自分の型は Claude と話しながら足す（rules/型を自分で作る.md）
+export const THEMES: Record<string, Theme> = {
+  // ノウハウ：手順・チェックリスト。保存したくなる
   howto: {
     bpm: 128, transition: 'wipe',
     label: 'ノウハウ', tag: 'HOW TO',
     bg: C.cream, ink: C.navy, sub: C.muted, accent: C.navy, marker: C.yellow,
     sticker: C.yellow, stickerInk: C.navy, head: GOTHIC, headWeight: 900,
   },
-  // なるほど：白に黄色と水色の丸。「？」→「！」
+  // なるほど：「？」→「！」
   naruhodo: {
     bpm: 140, transition: 'iris',
     label: 'なるほど', tag: 'DID YOU KNOW?',
     bg: C.white, ink: C.navy, sub: C.muted, accent: C.sky, marker: C.yellow,
     sticker: C.sky, stickerInk: C.navy, head: GOTHIC, headWeight: 900,
   },
-  // ビフォーアフター：白に方眼。BEFORE はくすんだ色、AFTER は黄色で「変わった」を見せる
+  // ビフォーアフター：前と後で何が変わったか
   compare: {
     bpm: 108, transition: 'slideup',
     label: 'ビフォーアフター', tag: 'BEFORE / AFTER',
     bg: C.white, ink: C.navy, sub: C.muted, accent: C.orange, marker: C.yellow,
     sticker: C.orange, stickerInk: C.white, head: GOTHIC, headWeight: 900,
-  },
-  // テンポ：場面ごとに背景色が斜めに切り替わる。文字は中央・大きく。TikTok 向き
-  kinetic: {
-    bpm: 150, transition: 'wipe',
-    label: 'テンポ', tag: 'QUICK',
-    bg: C.yellow, ink: C.navy, sub: C.navy, accent: C.orange, marker: C.white,
-    sticker: C.navy, stickerInk: C.yellow, head: GOTHIC, headWeight: 900,
-  },
-  // やりがちNG→OK：白地。NG は赤い×のハンコ、OK は緑の◯。損したくない気持ちで最後まで見てもらう
-  ngok: {
-    bpm: 132, transition: 'stamp',
-    label: 'やりがちNG', tag: 'NG → OK',
-    bg: C.white, ink: C.navy, sub: C.muted, accent: C.red, marker: C.yellow,
-    sticker: C.red, stickerInk: C.white, head: GOTHIC, headWeight: 900,
-  },
-  // ランキング：黄色地にスポットライト。1位は最後まで隠す
-  ranking: {
-    bpm: 120, transition: 'drop',
-    label: 'ランキング', tag: 'RANKING',
-    bg: C.yellow, ink: C.navy, sub: C.navy, accent: C.orange, marker: C.white,
-    sticker: C.navy, stickerInk: C.yellow, head: GOTHIC, headWeight: 900,
-  },
-  // クイズ：左右に分かれた A（水色）／B（黄色）。タイマーで答えを待たせる
-  quiz: {
-    bpm: 140, transition: 'split',
-    label: 'クイズ', tag: 'QUIZ',
-    bg: C.white, ink: C.navy, sub: C.muted, accent: C.sky, marker: C.yellow,
-    sticker: C.sky, stickerInk: C.navy, head: GOTHIC, headWeight: 900,
-  },
-  // POV・あるある：スマホのチャット画面のような明るいグレー。手作り感
-  pov: {
-    bpm: 124, transition: 'slideup',
-    label: 'POV', tag: 'POV',
-    bg: C.chatBg, ink: C.navy, sub: C.muted, accent: C.orange, marker: C.yellow,
-    sticker: C.navy, stickerInk: C.white, head: GOTHIC, headWeight: 900,
-  },
-  // 考察：クリームに紺の明朝。大人っぽく、でも暗くしない
-  insight: {
-    bpm: 84, transition: 'none',
-    label: '考察', tag: 'INSIGHT',
-    bg: C.cream, ink: C.navy, sub: C.muted, accent: C.yellow, marker: C.yellowSoft,
-    sticker: C.navy, stickerInk: C.yellow, head: MINCHO, headWeight: 600,
   },
 };

@@ -15,11 +15,10 @@ const Shell: React.FC<{ pattern: Pattern; t: Theme; index: number; total: number
 }) => (
   <AbsoluteFill style={{ color: t.ink, fontFamily: GOTHIC }}>
     <Background pattern={pattern} still />
-    {pattern === 'breaking' && <Ticker text={`${t.label}　${t.tag}`} top={1180} still />}
     {/* 上：型のシール＋ページ */}
     <div style={{ position: 'absolute', top: 96, left: PAD, right: PAD, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Sticker bg={t.sticker} color={t.stickerInk} size={30} rotate={-3}>
-        {pattern === 'breaking' ? '⚡ 速報' : t.label}
+        {false ? '⚡ 速報' : t.label}
       </Sticker>
       <div style={{ fontFamily: LATIN_BOLD, fontSize: 30, color: t.ink, opacity: 0.8 }}>
         {index + 1}<span style={{ opacity: 0.5 }}> / {total}</span>
@@ -28,14 +27,14 @@ const Shell: React.FC<{ pattern: Pattern; t: Theme; index: number; total: number
     {/* 中身（上下中央寄せ） */}
     <div
       style={{
-        position: 'absolute', left: PAD, right: PAD, top: 200, bottom: pattern === 'breaking' ? 230 : 170,
+        position: 'absolute', left: PAD, right: PAD, top: 200, bottom: false ? 230 : 170,
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
       }}
     >
       {children}
     </div>
     {/* 下：ハンドル＋次へ */}
-    {pattern !== 'breaking' && (
+    {true && (
       <div
         style={{
           position: 'absolute', bottom: 80, left: PAD, right: PAD, display: 'flex', justifyContent: 'space-between',
@@ -47,7 +46,7 @@ const Shell: React.FC<{ pattern: Pattern; t: Theme; index: number; total: number
       </div>
     )}
     {/* 速報：帯の下に小さく名前 */}
-    {pattern === 'breaking' && (
+    {false && (
       <div style={{ position: 'absolute', bottom: 22, left: PAD, fontSize: 22, fontWeight: 700, color: t.sub, letterSpacing: 2, opacity: 0.85 }}>
         <Name />
       </div>
@@ -68,11 +67,11 @@ const SlideView: React.FC<{ s: Slide; t: Theme; pattern: Pattern }> = ({ s, t, p
     return (
       <>
         {s.kicker && (
-          <div style={{ fontFamily: LATIN_BOLD, fontSize: 34, letterSpacing: 4, color: pattern === 'breaking' ? C.orange : t.sub, marginBottom: 28 }}>
+          <div style={{ fontFamily: LATIN_BOLD, fontSize: 34, letterSpacing: 4, color: false ? C.orange : t.sub, marginBottom: 28 }}>
             {s.kicker}
           </div>
         )}
-        <Title t={t} size={pattern === 'breaking' ? 104 : 96}>
+        <Title t={t} size={false ? 104 : 96}>
           <Marked text={s.title} mark={s.mark} color={t.marker} still />
         </Title>
         {s.sub && (
@@ -85,10 +84,10 @@ const SlideView: React.FC<{ s: Slide; t: Theme; pattern: Pattern }> = ({ s, t, p
     return (
       <>
         <div style={{ marginBottom: 40 }}>
-          {pattern === 'insight' ? (
+          {false ? (
             <div style={{ fontFamily: LATIN_BOLD, fontSize: 96, color: C.yellow, WebkitTextStroke: `3px ${C.navy}` }}>{s.no}</div>
           ) : (
-            <Sticker bg={pattern === 'breaking' ? C.navy : t.sticker} color={pattern === 'breaking' ? C.yellow : t.stickerInk} size={64} rotate={-5}>
+            <Sticker bg={false ? C.navy : t.sticker} color={false ? C.yellow : t.stickerInk} size={64} rotate={-5}>
               {s.no}
             </Sticker>
           )}
@@ -96,8 +95,8 @@ const SlideView: React.FC<{ s: Slide; t: Theme; pattern: Pattern }> = ({ s, t, p
         <Title t={t} size={76} style={{ marginBottom: 44 }}>{lines(s.title)}</Title>
         <div
           style={{
-            background: pattern === 'breaking' ? C.white : 'rgba(255,255,255,0.75)', borderRadius: 28,
-            border: `3px solid ${C.navy}`, padding: '36px 40px', boxShadow: pattern === 'insight' ? 'none' : `8px 8px 0 ${C.navy}`,
+            background: false ? C.white : 'rgba(255,255,255,0.75)', borderRadius: 28,
+            border: `3px solid ${C.navy}`, padding: '36px 40px', boxShadow: false ? 'none' : `8px 8px 0 ${C.navy}`,
           }}
         >
           <Body t={t}><Marked text={s.body} mark={s.mark} color={t.marker === C.white ? C.yellow : t.marker} still /></Body>
@@ -155,7 +154,7 @@ const SlideView: React.FC<{ s: Slide; t: Theme; pattern: Pattern }> = ({ s, t, p
     return (
       <>
         <div style={{ marginBottom: 36 }}>
-          <Sticker bg={pattern === 'breaking' ? C.navy : t.sticker} color={pattern === 'breaking' ? C.yellow : t.stickerInk} size={44} rotate={-3}>やることはこれ</Sticker>
+          <Sticker bg={false ? C.navy : t.sticker} color={false ? C.yellow : t.stickerInk} size={44} rotate={-3}>やることはこれ</Sticker>
         </div>
         {s.title && <Title t={t} size={72} style={{ marginBottom: 40 }}>{lines(s.title)}</Title>}
         {s.items.map((it, i) => (
@@ -177,7 +176,7 @@ const SlideView: React.FC<{ s: Slide; t: Theme; pattern: Pattern }> = ({ s, t, p
   return (
     <div style={{ textAlign: 'center' }}>
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 40 }}>
-        <Bookmark size={150} color={pattern === 'breaking' ? C.white : C.yellow} />
+        <Bookmark size={150} color={false ? C.white : C.yellow} />
       </div>
       <Title t={t} size={88}>{lines(s.title)}</Title>
       {s.body && <div style={{ marginTop: 44, fontSize: 40, fontWeight: 700, color: t.sub, lineHeight: 1.7 }}>{lines(s.body)}</div>}

@@ -4,7 +4,8 @@
 // 内容の型（作者の要望 2026-10-01：ニュース・ノウハウ・なるほど…パターンで雰囲気を変える）
 // 2026-10-02 追加：compare（ビフォーアフター）・kinetic（テンポ／場面ごとに背景色が切り替わる・TikTok向き）
 // 2026-10-02 8パターン化：ngok（やりがちNG→OK）・ranking（ランキング）・quiz（クイズ・どっち？）・pov（POV・あるある）
-export type Pattern = 'breaking' | 'howto' | 'naruhodo' | 'insight' | 'compare' | 'kinetic' | 'ngok' | 'ranking' | 'quiz' | 'pov';
+// 最初は3つ（howto・naruhodo・compare）。自分で作った型の名前も入る（rules/型を自分で作る.md）
+export type Pattern = string;
 
 // mark：本文の中で黄色マーカーを引く言葉（本文にそのまま含まれている語を1つ）
 export type Slide =

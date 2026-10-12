@@ -7,22 +7,17 @@
 
 ## 1. 型（パターン）— 色・動き・音楽がまるごと変わる
 
+最初に入っている型は3つだけです。**自分の発信に合う型は、Claude と話しながら足していきます**（`rules/型を自分で作る.md`）。
+
 | pattern | 名前 | 選ぶとき | 主な場面（kind） | 最後のお願いの目安 |
 |---|---|---|---|---|
-| `breaking` | 速報 | 新しい発表（ここ1〜2日） | hook / number / cards | 保存＋フォロー |
-| `howto` | ノウハウ | 手順・チェックリスト | hook / chat / brief / flow / point | 保存＋フォロー |
-| `naruhodo` | なるほど | 意外な事実・原因 | question / answer（`countdown: true`）/ chat | 送る＋保存 |
-| `kinetic` | テンポ | 短く勢いで・TikTok 向き | punch / chat / number / cards | 保存 |
-| `ngok` | やりがちNG→OK | 損する使い方 | ngok ×2〜3 | 保存＋フォロー |
-| `ranking` | ランキング | 〇選・大事な順 | rank 3 → 2 → 1 | 保存＋いいね |
-| `quiz` | クイズ | AとBの判断 | quiz（`a`/`b`/`answer`）×1〜2 | コメント |
-| `pov` | POV・あるある | 共感 | pov（chat＋reactions）/ brief / chat | 送る＋保存 |
+| `howto` | ノウハウ | 手順・チェックリスト・やり方 | hook / chat / brief / flow / point | 保存＋フォロー |
+| `naruhodo` | なるほど | 意外な事実・「へえ」が1つある | question / answer（`countdown: true`）/ chat | 送る＋保存 |
+| `compare` | ビフォーアフター | 前と後で何が変わったか | hook / compare / chat / point | 保存＋フォロー |
 
-- そのほか `insight`（考察）・`compare`（ビフォーアフター）も使える
-- 長さは `beats`（拍の数）で書く。目安：hook 6／point 6〜7／chat・brief・flow 10／ngok 9／quiz 11／rank 7（1位は9）／answer＋countdown 11／todo 10／cta 6〜8（部品1個 8・2個 10・3個 12）
-- 1本の中で同じ kind を3回続けない（ngok・quiz・rank は続けてよい）
-- ランキングの順位・クイズの正解は、材料に根拠があるときだけ断定する
-- 迷ったら：新しいニュースは `breaking`、保存させたい中身は `howto`、「へえ」が1つあれば `naruhodo`、損する使い方は `ngok`、〇選は `ranking`、AかBは `quiz`、共感は `pov`
+- 自分で型を足したら、その型も選んでよい（`sns-studio/tools/sns_common.py` の PATTERNS にある型だけ使える）
+- 長さは `beats`（拍の数）で書く。目安：hook 6／point 6〜7／chat・brief・flow 10／answer＋countdown 11／compare 9／todo 10／cta 6〜8（部品1個 8・2個 10・3個 12）
+- 1本の中で同じ kind を3回続けない
 
 ### マーカー（mark）
 - 各場面・各枚で、いちばん伝えたい言葉を1つ `mark` に書くと黄色のマーカーが引かれる
@@ -55,10 +50,6 @@
 | `number` | 数字が数え上がる | `"value": "3"`／`"label": "…"`／`text` |
 | `compare` | 上に BEFORE、下に AFTER | `"before": "…"`／`"after": "…"`（各2行・1行12字まで） |
 | `cards` | カードが重なる | `"cards": ["…"]`（4枚まで・1枚8字まで） |
-| `ngok` | NG に×→裏返って OK | `ng`／`ok`（各2行・1行10字まで） |
-| `rank` | 3位→1位 | `rank`（3→2→1）／`text`（8字まで）／`sub`（14字まで） |
-| `quiz` | A と B → 正解 | `a`／`b`（各2行・1行7字まで）／`answer`（"a" か "b"） |
-| `pov` | POV の札＋チャット＋絵文字 | `text`／`chat`／`reactions`（絵文字2〜3個） |
 
 - イメージ図の場面の `text` は2行まで・1行10字まで
 - `chat` の画面には「（イメージ）」と出る。実際の機能や返事を断定する内容にしない

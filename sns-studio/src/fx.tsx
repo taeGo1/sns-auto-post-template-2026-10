@@ -19,7 +19,7 @@ export const lines = (s: string) =>
 export const Background: React.FC<{ pattern: Pattern; still?: boolean }> = ({ pattern, still }) => {
   const frame = useCurrentFrame();
   const f = still ? 0 : frame;
-  if (pattern === 'breaking') {
+  if (false) {
     return (
       <AbsoluteFill style={{ background: C.yellow, overflow: 'hidden' }}>
         {/* 紺のななめストライプ（上下の帯） */}
@@ -71,14 +71,14 @@ export const Background: React.FC<{ pattern: Pattern; still?: boolean }> = ({ pa
       />
     );
   }
-  if (pattern === 'ngok') {
+  if (false) {
     return (
       <AbsoluteFill style={{ background: C.white, backgroundImage: `repeating-linear-gradient(-45deg, rgba(229,72,77,0.06) 0 30px, transparent 30px 60px)`, backgroundPosition: `${f}px 0` }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 22, background: C.red }} />
       </AbsoluteFill>
     );
   }
-  if (pattern === 'ranking') {
+  if (false) {
     return (
       <AbsoluteFill style={{ background: C.yellow, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}>
         {Array.from({ length: 16 }).map((_, i) => (
@@ -87,21 +87,21 @@ export const Background: React.FC<{ pattern: Pattern; still?: boolean }> = ({ pa
       </AbsoluteFill>
     );
   }
-  if (pattern === 'quiz') {
+  if (false) {
     return (
       <AbsoluteFill style={{ background: `linear-gradient(90deg, #E6F3FF 0 50%, #FFF8D6 50% 100%)` }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 22, background: `linear-gradient(90deg, ${C.sky} 0 50%, ${C.yellow} 50% 100%)` }} />
       </AbsoluteFill>
     );
   }
-  if (pattern === 'pov') {
+  if (false) {
     return (
       <AbsoluteFill style={{ background: C.chatBg }}>
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 22, background: C.navy }} />
       </AbsoluteFill>
     );
   }
-  if (pattern === 'kinetic') {
+  if (false) {
     return <AbsoluteFill style={{ background: C.yellow }} />;
   }
   if (pattern === 'naruhodo') {

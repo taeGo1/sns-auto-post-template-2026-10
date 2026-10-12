@@ -15,7 +15,7 @@ from sns_common import CREDENTIAL_PATTERN, PATTERNS, PATTERN_BPM, write_output
 
 TOLERANCE = 1.5  # 1行の字数はこれだけ超えても警告まで（見本の props がこの範囲に収まる）
 
-DIAGRAM_KINDS = {'chat', 'brief', 'flow', 'image', 'punch', 'number', 'compare', 'cards', 'ngok', 'rank', 'quiz', 'pov'}
+DIAGRAM_KINDS = {'chat', 'brief', 'flow', 'image', 'punch', 'number', 'compare', 'cards'}
 SCENE_KINDS = {'hook', 'point', 'list', 'question', 'answer', 'cta', 'todo'} | DIAGRAM_KINDS  # todo＝やることはこれ（2026-10-05）
 CTA_PARTS = {'save', 'like', 'follow', 'line', 'comment', 'share', 'profile'}
 NG_WORDS = ['——']  # 使わない言葉（長いダッシュ）。足したいときはここに

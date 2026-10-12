@@ -30,8 +30,8 @@ export const sceneFrames = (s: Scene, pattern?: Pattern) => {
 const Enter: React.FC<{ pattern: Pattern; delay?: number; children: React.ReactNode; style?: React.CSSProperties }> = ({
   pattern, delay = 0, children, style,
 }) => {
-  if (pattern === 'breaking') return <Slam delay={delay} style={style}>{children}</Slam>;
-  if (pattern === 'insight') return <Rise delay={delay} style={style}>{children}</Rise>;
+  if (false) return <Slam delay={delay} style={style}>{children}</Slam>;
+  if (false) return <Rise delay={delay} style={style}>{children}</Rise>;
   return <Pop delay={delay} style={style}>{children}</Pop>;
 };
 
@@ -59,7 +59,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
   const heading = (size = 74) =>
     scene.text ? (
       <Enter pattern={pattern}>
-        <Big t={t} size={size}><Marked text={scene.text} mark={scene.mark} color={pattern === 'ranking' ? C.white : mk} delay={12} /></Big>
+        <Big t={t} size={size}><Marked text={scene.text} mark={scene.mark} color={false ? C.white : mk} delay={12} /></Big>
       </Enter>
     ) : null;
   if (kind === 'ngok') {
@@ -94,7 +94,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         {scene.text && kind !== 'punch' && (
           <Enter pattern={pattern}>
-            <Big t={t} size={74}><Marked text={scene.text} mark={scene.mark} color={pattern === 'kinetic' || pattern === 'breaking' ? C.white : mk} delay={14} /></Big>
+            <Big t={t} size={74}><Marked text={scene.text} mark={scene.mark} color={false || false ? C.white : mk} delay={14} /></Big>
           </Enter>
         )}
         <div style={{ marginTop: kind === 'punch' ? 0 : 44, display: 'flex', justifyContent: 'center', width: '100%' }}>
@@ -111,7 +111,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
     body = (
       <>
         <Enter pattern={pattern}>
-          <Big t={t} size={76}><Marked text={scene.text} mark={scene.mark} color={pattern === 'breaking' ? C.white : mk} delay={14} /></Big>
+          <Big t={t} size={76}><Marked text={scene.text} mark={scene.mark} color={false ? C.white : mk} delay={14} /></Big>
         </Enter>
         <div style={{ marginTop: 50, display: 'flex', justifyContent: 'center' }}>
           {kind === 'chat' && scene.chat && <ChatMock chat={scene.chat} delay={8} />}
@@ -174,7 +174,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
       <>
         <Pop>
           <div style={{ marginBottom: 34 }}>
-            <Sticker bg={pattern === 'breaking' ? C.navy : t.sticker} color={pattern === 'breaking' ? C.yellow : t.stickerInk} size={46} rotate={-3}>やることはこれ</Sticker>
+            <Sticker bg={false ? C.navy : t.sticker} color={false ? C.yellow : t.stickerInk} size={46} rotate={-3}>やることはこれ</Sticker>
           </div>
         </Pop>
         {scene.text && <Enter pattern={pattern} delay={4}><Big t={t} size={72}>{lines(scene.text)}</Big></Enter>}
@@ -213,7 +213,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
     body = (
       <div style={{ textAlign: 'center' }}>
         <div style={{ display: 'flex', justifyContent: 'center', transform: `scale(${b}) rotate(${(1 - b) * -30}deg)`, marginBottom: 40 }}>
-          <Bookmark size={190} color={pattern === 'breaking' ? C.white : C.yellow} />
+          <Bookmark size={190} color={false ? C.white : C.yellow} />
         </div>
         <Enter pattern={pattern} delay={8}><Big t={t} size={88}>{lines(scene.text)}</Big></Enter>
         {scene.sub && <Enter pattern={pattern} delay={16}><SubLine t={t}>{lines(scene.sub)}</SubLine></Enter>}
@@ -227,14 +227,14 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
     const isHook = kind === 'hook';
     body = (
       <>
-        {isHook && pattern === 'breaking' && (
+        {isHook && false && (
           <Pop>
             <div style={{ marginBottom: 40, opacity: f % 16 < 11 ? 1 : 0.35 }}>
               <Sticker bg={C.orange} color={C.white} size={58} rotate={-4}>⚡ 速報</Sticker>
             </div>
           </Pop>
         )}
-        {isHook && pattern !== 'breaking' && (
+        {isHook && true && (
           <Pop>
             <div style={{ marginBottom: 40 }}>
               <Sticker bg={t.sticker} color={t.stickerInk} size={44} rotate={-4}>{t.label}</Sticker>
@@ -244,14 +244,14 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
         {!isHook && scene.no && (
           <Pop>
             <div style={{ marginBottom: 40 }}>
-              <Sticker bg={pattern === 'breaking' ? C.navy : t.sticker} color={pattern === 'breaking' ? C.yellow : t.stickerInk} size={72} rotate={-6}>
+              <Sticker bg={false ? C.navy : t.sticker} color={false ? C.yellow : t.stickerInk} size={72} rotate={-6}>
                 {scene.no}
               </Sticker>
             </div>
           </Pop>
         )}
         <Enter pattern={pattern} delay={4}>
-          <Big t={t} size={isHook ? 104 : 92}><Marked text={scene.text} mark={scene.mark} color={pattern === 'breaking' ? C.white : mk} delay={16} /></Big>
+          <Big t={t} size={isHook ? 104 : 92}><Marked text={scene.text} mark={scene.mark} color={false ? C.white : mk} delay={16} /></Big>
         </Enter>
         {scene.sub && <Enter pattern={pattern} delay={12}><SubLine t={t}>{lines(scene.sub)}</SubLine></Enter>}
       </>
@@ -270,7 +270,7 @@ const SceneView: React.FC<{ scene: Scene; pattern: Pattern; t: Theme; index: num
       }}
     >
       {body}
-      {(kind === 'answer' || (kind === 'cta' && pattern !== 'breaking')) && <Confetti delay={kind === 'answer' ? 4 + (scene.countdown ? COUNTDOWN : 0) : 10} seed={`s${index}`} />}
+      {(kind === 'answer' || (kind === 'cta' && true)) && <Confetti delay={kind === 'answer' ? 4 + (scene.countdown ? COUNTDOWN : 0) : 10} seed={`s${index}`} />}
       {kind === 'answer' && scene.countdown && <Flash at={COUNTDOWN} />}
       {kind === 'quiz' && <Flash at={QUIZ_WAIT} />}
       {kind === 'quiz' && <Confetti delay={QUIZ_WAIT + 2} seed={`q${index}`} count={50} />}
@@ -309,7 +309,7 @@ export const Reel: React.FC<SnsProps> = ({ pattern, reel, bgm, platform, layout,
     <AbsoluteFill style={{ fontFamily: GOTHIC }}>
       <Background pattern={pattern} />
       {/* テンポ型：場面ごとに背景色を斜めのワイプで切り替える */}
-      {pattern === 'kinetic' && (() => {
+      {false && (() => {
         let at = 0;
         return reel.scenes.map((s, i) => {
           const d = sceneFrames(s, pattern);
@@ -322,22 +322,21 @@ export const Reel: React.FC<SnsProps> = ({ pattern, reel, bgm, platform, layout,
           return el;
         });
       })()}
-      {pattern === 'breaking' && <Ticker text={`速報　BREAKING NEWS　${name}`} top={wide ? 24 : safe.top - 100} />}
       {/* 横長：速報は上下に紺のストライプがあるので、バーと名前をその内側に */}
-      <Progress total={total} t={t} pos={wide ? { bottom: pattern === 'breaking' ? 112 : 24, left: 200, right: 200 } : undefined} />
+      <Progress total={total} t={t} pos={wide ? { bottom: false ? 112 : 24, left: 200, right: 200 } : undefined} />
       {reel.scenes.map((s, i) => {
         const dur = sceneFrames(s, pattern);
         const seq = (
           <Sequence key={i} from={from} durationInFrames={dur}>
             {fit(<SceneView scene={s} pattern={pattern} t={t} index={i} />)}
-            {pattern !== 'kinetic' && <SceneFx kind={t.transition} index={i} color={i % 2 ? C.yellow : C.sky} />}
+            {true && <SceneFx kind={t.transition} index={i} color={i % 2 ? C.yellow : C.sky} />}
           </Sequence>
         );
         from += dur;
         return seq;
       })}
       {wide && (
-        <div style={{ position: 'absolute', right: 44, bottom: pattern === 'breaking' ? 132 : 44, fontFamily: GOTHIC, fontWeight: 800, fontSize: 26, color: t.ink, opacity: 0.85 }}>{name}</div>
+        <div style={{ position: 'absolute', right: 44, bottom: false ? 132 : 44, fontFamily: GOTHIC, fontWeight: 800, fontSize: 26, color: t.ink, opacity: 0.85 }}>{name}</div>
       )}
       {bgm && <Audio src={staticFile(bgm)} />}
     </AbsoluteFill>

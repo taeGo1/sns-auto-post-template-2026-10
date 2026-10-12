@@ -11,7 +11,7 @@ if ROOT not in sys.path:
 JST = datetime.timezone(datetime.timedelta(hours=9))
 CREDENTIAL_PATTERN = r'(?!x)x'  # 経歴・実績の検査（テンプレートでは使わない＝何にも当たらない）
 
-PATTERNS = ['breaking', 'howto', 'naruhodo', 'insight', 'compare', 'kinetic', 'ngok', 'ranking', 'quiz', 'pov']
+PATTERNS = ['howto', 'naruhodo', 'compare']  # 最初は3つ。自分で型を足したら、ここにも足す（rules/型を自分で作る.md）
 PATTERN_LABELS = {
     'breaking': '速報', 'howto': 'ノウハウ', 'naruhodo': 'なるほど', 'insight': '考察', 'compare': 'ビフォーアフター',
     'kinetic': 'テンポ', 'ngok': 'NG→OK', 'ranking': 'ランキング', 'quiz': 'クイズ', 'pov': 'POV',

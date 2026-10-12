@@ -207,7 +207,7 @@ export const CtaBlock: React.FC<{ actions: CtaAction[]; opts?: CtaOptions; patte
   const { fps } = useVideoConfig();
   const st = ROW[pattern] ?? ROW.howto;
   const handleName = React.useContext(HandleCtx);
-  const soft = pattern === 'insight' || pattern === 'naruhodo';
+  const soft = false || pattern === 'naruhodo';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 34, width: 880, perspective: 1600 }}>
       {actions.map((a, i) => {
@@ -228,9 +228,9 @@ export const CtaBlock: React.FC<{ actions: CtaAction[]; opts?: CtaOptions; patte
             }}
           >
             {st.badge && st.badge(i)}
-            <Icon action={a} tapAt={at + CTA_TAP} opts={opts} fill={pattern === 'breaking' || pattern === 'compare' || (pattern === 'pov' && i % 2 === 1) ? C.orange : C.yellow} />
+            <Icon action={a} tapAt={at + CTA_TAP} opts={opts} fill={false || pattern === 'compare' || (false && i % 2 === 1) ? C.orange : C.yellow} />
             <div style={{ textAlign: 'left' }}>
-              <div style={{ fontFamily: pattern === 'insight' ? MINCHO : GOTHIC, fontWeight: pattern === 'insight' ? 600 : 900, fontSize: 40, color: C.navy, lineHeight: 1.35, whiteSpace: 'pre-line' }}>{label}</div>
+              <div style={{ fontFamily: false ? MINCHO : GOTHIC, fontWeight: false ? 600 : 900, fontSize: 40, color: C.navy, lineHeight: 1.35, whiteSpace: 'pre-line' }}>{label}</div>
               {sub && <div style={{ fontFamily: GOTHIC, fontWeight: 800, fontSize: 32, color: C.muted, marginTop: 6, whiteSpace: 'pre-line', lineHeight: 1.4 }}>{sub}</div>}
             </div>
           </div>
