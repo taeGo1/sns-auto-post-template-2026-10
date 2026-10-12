@@ -41,6 +41,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write,WebSearch,WebFetch'
           prompt: |
             prompts/sources.md を Read tool で読み、その指示に完全に従って、話題を集める先を決める。
@@ -59,6 +60,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model_choose }} --max-turns 20 --allowedTools Read,Write,WebSearch,WebFetch'
           prompt: |
             prompts/choose_topic.md を Read tool で読み、その指示に完全に従って今日の話題を1つ選ぶ。
@@ -77,6 +79,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
           prompt: |
             prompts/plan_work.md を Read tool で読み、その指示に完全に従って「本当に試す」の計画を書く。
@@ -108,6 +111,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
           prompt: |
             prompts/explain_work.md を Read tool で読み、その指示に完全に従って作業動画の説明文字を書く。
@@ -133,6 +137,7 @@ jobs:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write,Edit,Glob'
           prompt: |
             prompts/generate_post.md を Read tool で読み、その指示に完全に従って投稿を2本書く。
@@ -152,6 +157,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write,Edit'
           prompt: |
             prompts/repair_post.md を Read tool で読み、その指示に完全に従って投稿案を直す。
@@ -174,6 +180,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write,Edit'
           prompt: |
             prompts/validate_post.md を Read tool で読み、その指示に完全に従って事実チェックと最小限の修正を行う。
@@ -192,6 +199,7 @@ jobs:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write'
           prompt: |
             sns-studio/prompts/generate_sns.md を Read tool で読み、その指示に完全に従って下書きを1本作る。
@@ -215,6 +223,7 @@ jobs:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write,Edit'
           prompt: |
             下書き ${{ runner.temp }}/sns-draft.json が機械の検査で不合格だった。
@@ -232,6 +241,7 @@ jobs:
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write'
           prompt: |
             sns-studio/prompts/caption_work.md を Read tool で読み、その指示に完全に従って作業動画の投稿文を書く。
