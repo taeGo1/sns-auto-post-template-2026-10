@@ -28,6 +28,16 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: 準備（Claude の鍵に入った改行・空白を取り除く）
+        env:
+          T: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          # ターミナルからコピーすると、鍵が2行に折り返して改行が入ることがある（貼り直さなくても動くように）
+          C=$(printf '%s' "$T" | tr -d '\r\n\t ')
+          if [ -z "$C" ]; then echo "::error::Claude の鍵（CLAUDE_CODE_OAUTH_TOKEN）が Secrets に入っていません。README のステップ2を見てください"; exit 1; fi
+          echo "::add-mask::$C"
+          echo "CLAUDE_TOKEN=$C" >> "$GITHUB_ENV"
+
       - name: 準備（部品を入れる・使うモデルを読む）
         id: cfg
         run: |
@@ -40,10 +50,9 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write,WebSearch,WebFetch'
-          show_full_output: true  # 試し：原因を見るため（あとで外す）
           prompt: |
             prompts/sources.md を Read tool で読み、その指示に完全に従って、話題を集める先を決める。
 
@@ -60,7 +69,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model_choose }} --max-turns 20 --allowedTools Read,Write,WebSearch,WebFetch'
           prompt: |
@@ -79,7 +88,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
           prompt: |
@@ -95,7 +104,7 @@ jobs:
         id: demo
         continue-on-error: true
         env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ env.CLAUDE_TOKEN }}
         run: |
           if python -c "import json,sys; sys.exit(0 if json.load(open('${{ runner.temp }}/work-plan.json')).get('demo',{}).get('doable') else 1)" 2>/dev/null; then
             npm install -g @anthropic-ai/claude-code --no-audit --no-fund > /dev/null
@@ -111,7 +120,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write'
           prompt: |
@@ -137,7 +146,7 @@ jobs:
         env:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write,Edit,Glob'
           prompt: |
@@ -157,7 +166,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write,Edit'
           prompt: |
@@ -180,7 +189,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write,Edit'
           prompt: |
@@ -199,7 +208,7 @@ jobs:
         env:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 30 --allowedTools Read,Write'
           prompt: |
@@ -223,7 +232,7 @@ jobs:
         env:
           CLAUDE_CODE_MAX_OUTPUT_TOKENS: "65536"
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write,Edit'
           prompt: |
@@ -241,7 +250,7 @@ jobs:
         continue-on-error: true
         uses: anthropics/claude-code-action@1d6de8cb0c237e7c15e9e1bdf973826ebae490cc  # v1.0.248
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_code_oauth_token: ${{ env.CLAUDE_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 20 --allowedTools Read,Write'
           prompt: |
