@@ -38,20 +38,53 @@ AI が、
 
 ## ステップ2：Claude の鍵を GitHub に入れる（`CLAUDE_CODE_OAUTH_TOKEN`）
 
-Claude のプランの中で動かすための鍵です。**1回だけ**、自分の Mac の「ターミナル」アプリで取ります（いちばん安全な方法です。鍵がほかのアプリを通りません）。
+Claude のプランの中で動かすための鍵です。**1回だけ**、自分のパソコンの「ターミナル」で取ります（いちばん安全な方法です。鍵がほかのアプリを通りません）。
+Claude の **Pro・Max プラン**が必要です（無料プランでは取れません）。
 
-1. **ターミナル**アプリを開く（Finder → アプリケーション → ユーティリティ → ターミナル。または Spotlight で「ターミナル」と検索）
-   - Windows の人は「PowerShell」を開く
-   - 先に Claude Code が入っている必要があります（入っていなければ、講座で案内する入れ方で入れてください）
-2. 次の1行を打って Enter
+### 2-1. ターミナルを開く
+- **Mac**：キーボードで「command ＋ スペース」→「ターミナル」と打って Enter（または Finder → アプリケーション → ユーティリティ → ターミナル）
+- **Windows**：キーボードで「Windows キー ＋ X」→「Windows PowerShell」（または「ターミナル」）
+
+白か黒の、文字を打つ画面が開きます。ここに下の1行を貼り付けて Enter を押すだけです（貼り付けは Mac：command ＋ V、Windows：右クリック または Ctrl ＋ V）。
+
+### 2-2. Claude Code（ターミナル版）を入れる（入っていない人だけ・1回だけ）
+すでに入っているかは、`claude --version` と打って Enter で確かめられます。`2.1.〇〇〇 (Claude Code)` のように出れば入っています → 2-3 へ。
+「command not found」「認識されません」と出たら、入っていないので、次の1行を貼り付けて Enter：
+
+- **Mac**
+  ```
+  curl -fsSL https://claude.ai/install.sh | bash
+  ```
+- **Windows（PowerShell）**
+  ```
+  irm https://claude.ai/install.ps1 | iex
+  ```
+
+- 入れている間は何も表示されないことがあります。**画面を閉じずに待ちます**（数分）
+- 最後に **「Claude Code successfully installed!」** と出たら完了です
+- **いったんターミナルの画面を閉じて、新しく開き直します**（開き直さないと `claude` が使えないことがあります）
+- 新しい画面で `claude --version` と打って、`2.1.〇〇〇 (Claude Code)` のように出ればOK
+
+うまくいかないとき：
+- 開き直しても `claude` が見つからない（Mac）：次の1行を貼り付けて Enter → もう一度ターミナルを開き直す
+  ```
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+  ```
+- Windows で見つからない：入れ終わったときの画面の最後（Setup notes）に、直し方の1行が出ています。それを貼り付けて Enter → PowerShell を開き直す
+- Mac は macOS 13 以上、Windows は Windows 10（1809）以上が必要です
+
+### 2-3. 鍵を取る
+1. 次の1行を貼り付けて Enter
    ```
    claude setup-token
    ```
-3. ブラウザが開くので「許可」
-4. ターミナルに `sk-ant-oat` で始まる長い文字が出るので、それをコピー（あとで見られないので、この画面のうちに）
-5. GitHub の自分のリポジトリ → **Settings** → 左の **Secrets and variables** → **Actions** → 緑の **New repository secret**
-   - Name：`CLAUDE_CODE_OAUTH_TOKEN`
-   - Secret：コピーした文字 → **Add secret**
+2. ブラウザが開くので、Claude のアカウントでログインして「許可」
+3. ターミナルに `sk-ant-oat` で始まる長い文字が出るので、それをコピー（あとで見られないので、この画面のうちに。Mac はドラッグして command ＋ C、Windows はドラッグして右クリック または Ctrl ＋ C）
+4. 下の 2-4 で GitHub に貼ったら、ターミナルは閉じてOK
+
+### 2-4. GitHub に入れる
+1. GitHub の自分のリポジトリ → **Settings** → 左の **Secrets and variables** → **Actions** → 緑の **New repository secret**
+2. Name：`CLAUDE_CODE_OAUTH_TOKEN`／Secret：2-3でコピーした文字 → **Add secret**
 
 > この鍵は、取った人の Claude のプランを使える「合い鍵」です。
 > **チャット（Claude を含む）に貼らない・スクリーンショットに撮らない・人に渡さない**。GitHub の Secrets にだけ貼ってください。貼り終えたらターミナルは閉じてOKです。
