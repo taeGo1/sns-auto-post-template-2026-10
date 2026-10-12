@@ -43,6 +43,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ github.token }}  # Claude の GitHub アプリを入れなくても動くように（GitHub が用意する鍵）
           claude_args: '--model ${{ steps.cfg.outputs.model }} --max-turns 15 --allowedTools Read,Write,WebSearch,WebFetch'
+          show_full_output: true  # 試し：原因を見るため（あとで外す）
           prompt: |
             prompts/sources.md を Read tool で読み、その指示に完全に従って、話題を集める先を決める。
 
